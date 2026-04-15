@@ -170,6 +170,156 @@ async function initCodexAction(
   }
 }
 
+// Gemini initialization action
+async function initGeminiAction(
+  ctx: CommandContext,
+  options: { geminiMode: boolean; dualMode: boolean; force: boolean; minimal: boolean; full: boolean }
+): Promise<CommandResult> {
+  const { force, minimal, full, dualMode } = options;
+
+  output.writeln();
+  output.writeln(output.bold('Initializing RuFlo V3 for Google Gemini CLI'));
+  output.writeln();
+
+  // Determine template
+  const template = minimal ? 'minimal' : full ? 'full' : 'default';
+
+  const spinner = output.createSpinner({ text: 'Initializing Gemini CLI project...' });
+  spinner.start();
+
+  try {
+    // Dynamic import of the Gemini initializer with lazy loading fallback
+    interface GeminiInitResult {
+      success: boolean;
+      errors?: string[];
+      filesCreated: string[];
+      skillsGenerated: string[];
+      warnings?: string[];
+    }
+    let GeminiInitializer: (new () => { initialize: (options: Record<string, unknown>) => Promise<GeminiInitResult> }) | undefined;
+
+    // Try multiple resolution strategies for the @claude-flow/gemini package
+    const geminiModuleId = '@claude-flow/gemini';
+    const resolutionStrategies = [
+      // Strategy 1: Direct import (works if installed as CLI dependency)
+      async () => (await import(geminiModuleId)).GeminiInitializer,
+      // Strategy 2: Project node_modules (works if installed in user's project)
+      async () => {
+        const projectPath = path.join(ctx.cwd, 'node_modules', '@claude-flow', 'gemini', 'dist', 'index.js');
+        if (fs.existsSync(projectPath)) {
+          const mod = await import(`file://${projectPath}`);
+          return mod.GeminiInitializer;
+        }
+        throw new Error('Not found in project');
+      },
+      // Strategy 3: Global node_modules
+      async () => {
+        const { execSync } = await import('child_process');
+        const globalPath = execSync('npm root -g', { encoding: 'utf-8' }).trim();
+        const geminiPath = path.join(globalPath, '@claude-flow', 'gemini', 'dist', 'index.js');
+        if (fs.existsSync(geminiPath)) {
+          const mod = await import(`file://${geminiPath}`);
+          return mod.GeminiInitializer;
+        }
+        throw new Error('Not found globally');
+      },
+    ];
+
+    for (const strategy of resolutionStrategies) {
+      try {
+        GeminiInitializer = await strategy();
+        if (GeminiInitializer) break;
+      } catch {
+        // Try next strategy
+      }
+    }
+
+    if (!GeminiInitializer) {
+      throw new Error('Cannot find module @claude-flow/gemini');
+    }
+
+    const initializer = new GeminiInitializer();
+
+    const result = await initializer.initialize({
+      projectPath: ctx.cwd,
+      template: template as 'minimal' | 'default' | 'full' | 'enterprise',
+      force,
+      dual: dualMode,
+    });
+
+    if (!result.success) {
+      spinner.fail('Gemini CLI initialization failed');
+      if (result.errors) {
+        for (const error of result.errors) {
+          output.printError(error);
+        }
+      }
+      return { success: false, exitCode: 1 };
+    }
+
+    spinner.succeed('Gemini CLI project initialized successfully!');
+    output.writeln();
+
+    // Display summary
+    const summary: string[] = [];
+    summary.push(`Files: ${result.filesCreated.length} created`);
+    summary.push(`Skills: ${result.skillsGenerated.length} installed`);
+
+    output.printBox(summary.join('\n'), 'Summary');
+    output.writeln();
+
+    // Show what was created
+    output.printBox(
+      [
+        `GEMINI.md:     Main project instructions`,
+        `.gemini/settings.json: Gemini CLI configuration`,
+        `.gemini/skills/: ${result.skillsGenerated.length} skills`,
+        dualMode ? `CLAUDE.md: Claude Code compatibility` : '',
+      ].filter(Boolean).join('\n'),
+      'Google Gemini CLI Integration'
+    );
+    output.writeln();
+
+    // Warnings
+    if (result.warnings && result.warnings.length > 0) {
+      output.printWarning('Warnings:');
+      for (const warning of result.warnings.slice(0, 5)) {
+        output.printInfo(`  • ${warning}`);
+      }
+      if (result.warnings.length > 5) {
+        output.printInfo(`  ... and ${result.warnings.length - 5} more`);
+      }
+      output.writeln();
+    }
+
+    // Next steps
+    output.writeln(output.bold('Next steps:'));
+    output.printList([
+      `Review ${output.highlight('GEMINI.md')} for project instructions`,
+      `Add skills with ${output.highlight('$skill-name')} syntax`,
+      `Configure ${output.highlight('.gemini/settings.json')} for your project`,
+      dualMode ? `Claude Code users can use ${output.highlight('CLAUDE.md')}` : '',
+    ].filter(Boolean));
+
+    return { success: true, data: result };
+  } catch (error) {
+    spinner.fail('Gemini CLI initialization failed');
+    const errorMessage = error instanceof Error ? error.message : String(error);
+
+    // Handle module not found error gracefully
+    if (errorMessage.includes('Cannot find module') || errorMessage.includes('@claude-flow/gemini')) {
+      output.printError('The @claude-flow/gemini package is not installed.');
+      output.printInfo('Install it with: npm install @claude-flow/gemini');
+      output.writeln();
+      output.printInfo('Alternatively, copy skills manually from .claude/skills/ to .gemini/skills/');
+    } else {
+      output.printError(`Failed to initialize: ${errorMessage}`);
+    }
+
+    return { success: false, exitCode: 1 };
+  }
+}
+
 // Check if project is already initialized
 function isInitialized(cwd: string): { claude: boolean; claudeFlow: boolean } {
   const claudePath = path.join(cwd, '.claude', 'settings.json');
@@ -188,8 +338,14 @@ const initAction = async (ctx: CommandContext): Promise<CommandResult> => {
   const skipClaude = ctx.flags['skip-claude'] as boolean;
   const onlyClaude = ctx.flags['only-claude'] as boolean;
   const codexMode = ctx.flags.codex as boolean;
+  const geminiMode = ctx.flags.gemini as boolean;
   const dualMode = ctx.flags.dual as boolean;
   const cwd = ctx.cwd;
+
+  // If gemini mode, use the Gemini initializer
+  if (geminiMode) {
+    return initGeminiAction(ctx, { geminiMode, dualMode, force, minimal, full });
+  }
 
   // If codex mode, use the Codex initializer
   if (codexMode || dualMode) {
@@ -1095,8 +1251,14 @@ export const initCommand: Command = {
       default: false,
     },
     {
+      name: 'gemini',
+      description: 'Initialize for Google Gemini CLI (creates GEMINI.md, .gemini/)',
+      type: 'boolean',
+      default: false,
+    },
+    {
       name: 'dual',
-      description: 'Initialize for both Claude Code and OpenAI Codex',
+      description: 'Initialize for both Claude Code and the selected CLI platform',
       type: 'boolean',
       default: false,
     },
@@ -1120,6 +1282,9 @@ export const initCommand: Command = {
     { command: 'claude-flow init upgrade --verbose', description: 'Show detailed upgrade info' },
     { command: 'claude-flow init --codex', description: 'Initialize for OpenAI Codex (AGENTS.md)' },
     { command: 'claude-flow init --codex --full', description: 'Codex init with all 137+ skills' },
+    { command: 'claude-flow init --gemini', description: 'Initialize for Google Gemini CLI (GEMINI.md)' },
+    { command: 'claude-flow init --gemini --full', description: 'Gemini CLI init with all 137+ skills' },
+    { command: 'claude-flow init --gemini --dual', description: 'Initialize for both Gemini CLI and Claude Code' },
     { command: 'claude-flow init --dual', description: 'Initialize for both Claude Code and Codex' },
   ],
   action: initAction,
