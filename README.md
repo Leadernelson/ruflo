@@ -14,14 +14,15 @@
 [![ruv.io](https://img.shields.io/badge/ruv.io-AI%20Platform-green?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQyIDAtOC0zLjU4LTgtOHMzLjU4LTggOC04IDggMy41OCA4IDgtMy41OCA4LTggOHoiLz48L3N2Zz4=)](https://ruv.io)
 [![Agentics Foundation](https://img.shields.io/badge/Agentics-Foundation-crimson?style=for-the-badge&logo=openai)](https://discord.com/invite/dfxmpwkG2D)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-SDK%20Integrated-green?style=for-the-badge&logo=anthropic)](https://github.com/ruvnet/claude-flow)
+[![Gemini CLI](https://img.shields.io/badge/Gemini%20CLI-Supported-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://github.com/ruvnet/claude-flow)
 [![MIT License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge&logo=opensourceinitiative)](https://opensource.org/licenses/MIT)
 ---
 [![Follow @ruv](https://img.shields.io/badge/Follow%20%40ruv-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/ruv)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/reuvencohen/)
 [![YouTube](https://img.shields.io/badge/YouTube-Subscribe-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@ReuvenCohen)
 
-# **Multi-agent AI orchestration for Claude Code**
-*Deploy 16 specialized agent roles + custom types in coordinated swarms with self-learning capabilities, fault-tolerant consensus, and enterprise-grade security.*
+# **Multi-agent AI orchestration for Claude Code, Gemini CLI & Codex**
+*Deploy 16 specialized agent roles + custom types in coordinated swarms with self-learning capabilities, fault-tolerant consensus, and enterprise-grade security — across Claude Code, Google Gemini CLI, and OpenAI Codex.*
 
 </div>
 
@@ -29,7 +30,7 @@
 
 ## Getting into the Flow
 
-Ruflo is a comprehensive AI agent orchestration framework that transforms Claude Code into a powerful multi-agent development platform. It enables teams to deploy, coordinate, and optimize specialized AI agents working together on complex software engineering tasks.
+Ruflo is a comprehensive AI agent orchestration framework that transforms Claude Code, Google Gemini CLI, and OpenAI Codex into powerful multi-agent development platforms. It enables teams to deploy, coordinate, and optimize specialized AI agents working together on complex software engineering tasks.
 
 ### Self-Learning/Self-Optimizing Agent Architecture
 
@@ -172,9 +173,9 @@ npx ruflo@latest init --wizard
 
 🧠 **Learns From Your Workflow** - The system remembers what works. Successful patterns are stored and reused, routing similar tasks to the best-performing agents. Gets smarter over time.
 
-🔌 **Works With Any LLM** - Switch between Claude, GPT, Gemini, Cohere, or local models like Llama. Automatic failover if one provider is unavailable. Smart routing picks the cheapest option that meets quality requirements.
+🔌 **Works With Any LLM** - Switch between Claude, GPT, Gemini, Cohere, or local models like Llama. Native platform adapters for Claude Code, Google Gemini CLI, and OpenAI Codex. Automatic failover if one provider is unavailable. Smart routing picks the cheapest option that meets quality requirements.
 
-⚡ **Plugs Into Claude Code** - Native integration via MCP (Model Context Protocol). Use ruflo commands directly in your Claude Code sessions with full tool access.
+⚡ **Plugs Into Claude Code, Gemini CLI & Codex** - Native integration via MCP (Model Context Protocol). Use ruflo commands directly in your Claude Code, Google Gemini CLI, or OpenAI Codex sessions with full tool access. Platform adapters handle the differences automatically.
 
 🔒 **Production-Ready Security** - Built-in protection against prompt injection, input validation, path traversal prevention, command injection blocking, and safe credential handling.
 
@@ -394,10 +395,11 @@ swarm_init({
 
 </details>
 
-### Claude Code: With vs Without Ruflo
+### With vs Without Ruflo
 
-| Capability | Claude Code Alone | Claude Code + Ruflo |
+| Capability | AI CLI Alone | AI CLI + Ruflo |
 |------------|-------------------|---------------------------|
+| **Platform Support** | Single platform only | Claude Code, Gemini CLI, and Codex with cross-platform dual-mode collaboration |
 | **Agent Collaboration** | Agents work in isolation, no shared context | Agents collaborate via swarms with shared memory and consensus |
 | **Coordination** | Manual orchestration between tasks | Queen-led hierarchy with 3 consensus algorithms (Raft, Byzantine, Gossip) |
 | **Hive Mind** | ⛔ Not available | 🐝 Queen-led swarms with collective intelligence, 3 queen types, 8 worker types |
@@ -411,7 +413,7 @@ swarm_init({
 | **Task Routing** | You decide which agent to use | Intelligent routing based on learned patterns (89% accuracy) |
 | **Complex Tasks** | Manual breakdown required | Automatic decomposition across 5 domains (Security, Core, Integration, Support) |
 | **Background Workers** | Nothing runs automatically | 12 context-triggered workers auto-dispatch on file changes, patterns, sessions |
-| **LLM Provider** | Anthropic only | 5 providers (Anthropic, OpenAI, Google, Cohere, Ollama) with automatic failover and cost-based routing (cost-optimized routing) |
+| **LLM Provider** | Single provider only | 5 providers (Anthropic, OpenAI, Google, Cohere, Ollama) with automatic failover and cost-based routing |
 | **Security** | Standard protections | CVE-hardened with bcrypt, input validation, path traversal prevention |
 | **Performance** | Baseline | Faster tasks via parallel swarm spawning and intelligent routing |
 
@@ -422,14 +424,17 @@ swarm_init({
 - **Node.js 20+** (required)
 - **npm 9+** / **pnpm** / **bun** package manager
 
-**IMPORTANT**: Claude Code must be installed first:
+**IMPORTANT**: At least one AI CLI platform must be installed:
 
 ```bash
-# 1. Install Claude Code globally
+# Option A: Claude Code (recommended)
 npm install -g @anthropic-ai/claude-code
 
-# 2. (Optional) Skip permissions check for faster setup
-claude --dangerously-skip-permissions
+# Option B: Google Gemini CLI
+npm install -g @anthropic-ai/gemini
+
+# Option C: OpenAI Codex CLI
+npm install -g @openai/codex
 ```
 
 ### Installation
@@ -659,11 +664,246 @@ The **Intelligence Loop** (ADR-050) automates this cycle through hooks. Each ses
 
 </details>
 
+<details>
+<summary>🟡 <strong>Google Gemini CLI Support</strong> — Full Gemini integration with self-learning</summary>
+
+Ruflo supports **Google Gemini CLI** via the [@claude-flow/gemini](https://www.npmjs.com/package/@claude-flow/gemini) package, bringing the full power of multi-agent orchestration, self-learning memory, and swarm coordination to the Gemini ecosystem.
+
+### Quick Start for Gemini CLI
+
+```bash
+# Initialize for Gemini CLI (creates GEMINI.md and .gemini/)
+npx ruflo@latest init --gemini
+
+# Full Gemini setup with all 137+ skills
+npx ruflo@latest init --gemini --full
+
+# Initialize for both platforms (dual mode)
+npx ruflo@latest init --gemini --dual
+```
+
+Or use the standalone CLI:
+
+```bash
+# Install the Gemini adapter
+npm install @claude-flow/gemini
+
+# Initialize a project
+npx claude-flow-gemini init
+
+# Full setup with all skills
+npx claude-flow-gemini init --template full
+
+# Dual mode (Gemini CLI + Claude Code)
+npx claude-flow-gemini init --dual
+```
+
+### Platform Comparison
+
+| Feature | Claude Code | Google Gemini CLI | OpenAI Codex |
+|---------|-------------|-------------------|--------------|
+| Config File | `CLAUDE.md` | `GEMINI.md` | `AGENTS.md` |
+| Skills Dir | `.claude/skills/` | `.gemini/skills/` | `.agents/skills/` |
+| Skill Syntax | `/skill-name` | `$skill-name` | `$skill-name` |
+| Settings | `settings.json` | `.gemini/settings.json` | `config.toml` |
+| MCP | Native | Via `mcp_servers` config | Via `codex mcp add` |
+| Default Model | claude-sonnet | gemini-2.5-flash | gpt-5.3 |
+
+### Key Concept: Execution Model
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  CLAUDE-FLOW = ORCHESTRATOR (tracks state, stores memory)    │
+│  GEMINI CLI  = EXECUTOR (writes code, runs commands)         │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Gemini CLI does the work. Claude-flow coordinates and learns.**
+
+### What Gets Created
+
+```
+your-project/
+├── GEMINI.md              # Main project instructions for Gemini CLI
+├── .gemini/
+│   ├── settings.json      # Gemini CLI configuration
+│   ├── skills/            # Skill definitions
+│   │   ├── swarm-orchestration/
+│   │   ├── memory-management/
+│   │   ├── sparc-methodology/
+│   │   └── security-audit/
+│   └── local/             # Local overrides (gitignored)
+├── .claude-flow/          # Claude Flow runtime data
+│   ├── memory/            # Vector memory database
+│   └── hooks/             # Hook scripts
+└── CLAUDE.md              # (dual mode) Claude Code compatibility
+```
+
+### Dual-Mode Integration (Claude Code + Gemini CLI)
+
+Run Claude Code and Gemini CLI workers in parallel with shared memory coordination:
+
+```
+Level 0: [🔵 Architect]              # No dependencies — runs first
+Level 1: [🟡 Coder, 🔵 Tester]       # Depends on Architect
+Level 2: [🔵 Reviewer]               # Depends on Coder + Tester
+Level 3: [🟡 Optimizer]              # Depends on Reviewer
+```
+
+| Task Type | Platform | Reason |
+|-----------|----------|--------|
+| Architecture & Design | 🔵 Claude Code | Strong reasoning, system thinking |
+| Implementation | 🟡 Gemini CLI | Fast code generation, 1M+ context |
+| Security Review | 🔵 Claude Code | Careful analysis, threat modeling |
+| Performance Optimization | 🟡 Gemini CLI | Code-level optimizations |
+| Testing Strategy | 🔵 Claude Code | Coverage analysis, edge cases |
+| Refactoring | 🟡 Gemini CLI | Bulk transformations |
+
+### Dual-Mode CLI Commands
+
+```bash
+# List collaboration templates
+npx claude-flow-gemini dual templates
+
+# Run feature development swarm (architect → coder → tester → reviewer)
+npx claude-flow-gemini dual run --template feature --task "Add user auth"
+
+# Run security audit swarm (scanner → analyzer → fixer)
+npx claude-flow-gemini dual run --template security --task "src/auth/"
+
+# Run refactoring swarm (analyzer → planner → refactorer → validator)
+npx claude-flow-gemini dual run --template refactor --task "src/legacy/"
+```
+
+### Pre-Built Collaboration Templates
+
+| Template | Pipeline | Platforms |
+|----------|----------|-----------|
+| **feature** | 🔵 Architect → 🟡 Coder → 🔵 Tester → 🟡 Reviewer | Claude + Gemini |
+| **security** | 🟡 Scanner → 🔵 Analyzer → 🟡 Fixer | Gemini + Claude |
+| **refactor** | 🔵 Analyzer → 🔵 Planner → 🟡 Refactorer → 🔵 Validator | Claude + Gemini |
+
+### MCP Integration for Gemini CLI
+
+Gemini CLI connects to Claude Flow via MCP (Model Context Protocol):
+
+```json
+{
+  "mcp_servers": {
+    "claude-flow": {
+      "command": "npx",
+      "args": ["claude-flow@alpha", "mcp", "start"],
+      "enabled": true
+    }
+  }
+}
+```
+
+### Available MCP Tools
+
+| Tool | Purpose | When to Use |
+|------|---------|-------------|
+| `memory_search` | Semantic vector search | BEFORE starting any task |
+| `memory_store` | Save patterns with embeddings | AFTER completing successfully |
+| `memory_retrieve` | Retrieve by exact key | When key is known |
+| `swarm_init` | Initialize coordination | Start of complex tasks |
+| `agent_spawn` | Register agent roles | Multi-agent workflows |
+| `neural_train` | Train on patterns | Periodic improvement |
+
+### Self-Learning Workflow
+
+```
+1. LEARN:   memory_search(query="task keywords") → Find similar patterns
+2. COORD:   swarm_init(topology="hierarchical") → Set up coordination
+3. EXECUTE: Gemini CLI writes code, runs commands → Gemini does real work
+4. REMEMBER: memory_store(key, value, namespace="patterns") → Save for future
+```
+
+### Gemini CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `claude-flow-gemini init` | Initialize a Gemini CLI project |
+| `claude-flow-gemini generate-skill` | Generate a new SKILL.md file |
+| `claude-flow-gemini validate` | Validate GEMINI.md, SKILL.md, or settings.json |
+| `claude-flow-gemini migrate` | Migrate from Claude Code (CLAUDE.md) to Gemini CLI |
+| `claude-flow-gemini doctor` | Health check for Gemini CLI integration |
+| `claude-flow-gemini dual` | Run dual-mode collaborative swarms |
+| `claude-flow-gemini templates` | List available project templates |
+| `claude-flow-gemini skills` | List built-in skills |
+
+### Templates
+
+| Template | Skills | Best For |
+|----------|--------|----------|
+| **minimal** | 2 (swarm-orchestration, memory-management) | Quick start, lightweight projects |
+| **default** | 4 (+ sparc-methodology, security-audit) | Most projects |
+| **full** | 137+ (all built-in skills) | Enterprise, comprehensive setup |
+| **enterprise** | 137+ with advanced config | Large teams, compliance needs |
+
+### Feature Mapping: Claude Code → Gemini CLI
+
+| Claude Code | Gemini CLI | Status |
+|-------------|-----------|--------|
+| `CLAUDE.md` | `GEMINI.md` | ✅ Mapped |
+| `.claude/settings.json` | `.gemini/settings.json` | ✅ Mapped |
+| `/skill-name` | `$skill-name` | ✅ Mapped |
+| `.claude/skills/` | `.gemini/skills/` | ✅ Mapped |
+| `allowedTools` | `sandbox_permission` | ⚠️ Partial |
+| `mcpServers` | `mcp_servers` | ✅ Mapped |
+| `claude -p` | `gemini --non-interactive` | ⚠️ Partial |
+
+### Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `GOOGLE_API_KEY` | Google API key for Gemini models |
+| `GEMINI_MODEL` | Default Gemini model (e.g., gemini-2.5-flash) |
+| `GEMINI_SANDBOX_PERMISSION` | Sandbox permission level (readonly, write, full-access) |
+| `GEMINI_LOG_LEVEL` | Log level (debug, info, warn, error) |
+
+### Programmatic API
+
+```typescript
+import {
+  GeminiInitializer,
+  DualModeOrchestrator,
+  CollaborationTemplates,
+  generateGeminiMd,
+  validateGeminiMd,
+} from '@claude-flow/gemini';
+
+// Initialize a project
+const initializer = new GeminiInitializer();
+const result = await initializer.initialize({
+  projectPath: './my-project',
+  template: 'default',
+  dual: true,
+});
+
+// Run dual-mode collaboration
+const orchestrator = new DualModeOrchestrator({
+  projectPath: './my-project',
+  sharedNamespace: 'my-feature',
+});
+
+const workers = CollaborationTemplates.featureDevelopment('Add OAuth login');
+const results = await orchestrator.runCollaboration(workers, 'Implement OAuth');
+```
+
+</details>
+
 ### Basic Usage
 
 ```bash
-# Initialize project
+# Initialize project (Claude Code — default)
 npx ruflo@latest init
+
+# Initialize for Google Gemini CLI
+npx ruflo@latest init --gemini
+
+# Initialize for OpenAI Codex CLI
+npx ruflo@latest init --codex
 
 # Start MCP server for Claude Code integration
 npx ruflo@latest mcp start
@@ -884,6 +1124,8 @@ Complex projects fail when implementation drifts from the original plan. Ruflo s
 flowchart TB
     subgraph User["👤 User Layer"]
         CC[Claude Code]
+        GC[Gemini CLI]
+        CX[Codex CLI]
         CLI[CLI Commands]
     end
 
@@ -913,6 +1155,8 @@ flowchart TB
     end
 
     CC --> MCP
+    GC --> MCP
+    CX --> MCP
     CLI --> MCP
     MCP --> Router
     Router --> Hooks
@@ -1412,7 +1656,9 @@ All configurations support these environment variables:
 |----------|-------------|----------|
 | `ANTHROPIC_API_KEY` | Your Anthropic API key | Yes (for Claude models) |
 | `OPENAI_API_KEY` | OpenAI API key | Optional (for GPT models) |
-| `GOOGLE_API_KEY` | Google AI API key | Optional (for Gemini) |
+| `GOOGLE_API_KEY` | Google AI API key | Optional (for Gemini CLI / Gemini models) |
+| `GEMINI_MODEL` | Default Gemini model (e.g., gemini-2.5-flash) | Optional |
+| `GEMINI_SANDBOX_PERMISSION` | Gemini sandbox permission level | Optional |
 | `CLAUDE_FLOW_LOG_LEVEL` | Logging level (debug, info, warn, error) | Optional |
 | `CLAUDE_FLOW_TOOL_GROUPS` | MCP tool groups to enable (comma-separated) | Optional |
 | `CLAUDE_FLOW_TOOL_MODE` | Preset tool mode (develop, pr-review, devops, etc.) | Optional |
