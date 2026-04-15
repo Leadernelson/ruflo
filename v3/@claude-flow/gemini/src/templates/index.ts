@@ -78,9 +78,9 @@ export function getTemplate(name: GeminiMdTemplate): typeof TEMPLATES[GeminiMdTe
 /**
  * List all available templates
  */
-export function listTemplates(): Array<{ name: string; description: string; skillCount: number }> {
+export function listTemplates(): Array<{ key: string; name: string; description: string; skillCount: number }> {
   return Object.entries(TEMPLATES).map(([key, value]) => ({
-    name: key,
+    key,
     ...value,
   }));
 }

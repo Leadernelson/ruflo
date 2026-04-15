@@ -256,7 +256,9 @@ export class DualModeOrchestrator extends EventEmitter {
 
       // Avoid infinite loop if there are circular dependencies
       if (currentLevel.length === 0 && nextRemaining.length > 0) {
-        // Force remaining into current level
+        // Warn about circular dependencies and force remaining into current level
+        const circularIds = nextRemaining.map((w) => w.id).join(', ');
+        console.warn(`Warning: Circular dependency detected among workers: ${circularIds}. Executing them in parallel.`);
         currentLevel.push(...nextRemaining);
         nextRemaining.length = 0;
       }

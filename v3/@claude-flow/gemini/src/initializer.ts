@@ -6,6 +6,7 @@
 
 import fs from 'fs-extra';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import type {
   GeminiInitOptions,
   GeminiInitResult,
@@ -45,7 +46,7 @@ export class GeminiInitializer {
 
     // Resolve bundled skills path (relative to this file's location)
     this.bundledSkillsPath = path.resolve(
-      path.dirname(new URL(import.meta.url).pathname),
+      path.dirname(fileURLToPath(import.meta.url)),
       BUNDLED_SKILLS_DIR
     );
 

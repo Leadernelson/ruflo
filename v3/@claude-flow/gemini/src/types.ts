@@ -51,11 +51,11 @@ export interface GeminiMdOptions {
 export interface SkillMdOptions {
   name: string;
   description: string;
-  triggers?: string[];
-  skipWhen?: string[];
-  scripts?: SkillScript[];
-  references?: SkillReference[];
-  commands?: SkillCommand[];
+  triggers?: string[] | undefined;
+  skipWhen?: string[] | undefined;
+  scripts?: SkillScript[] | undefined;
+  references?: SkillReference[] | undefined;
+  commands?: SkillCommand[] | undefined;
 }
 
 /**
@@ -122,11 +122,11 @@ export interface GeminiConfigOptions {
  */
 export interface GeminiInitOptions {
   projectPath: string;
-  template?: GeminiMdTemplate;
-  skills?: string[];
-  force?: boolean;
-  dual?: boolean;  // Generate both Claude Code and Gemini CLI configs
-  migrateFrom?: 'claude.md' | 'CLAUDE.md';
+  template?: GeminiMdTemplate | undefined;
+  skills?: string[] | undefined;
+  force?: boolean | undefined;
+  dual?: boolean | undefined;  // Generate both Claude Code and Gemini CLI configs
+  migrateFrom?: 'claude.md' | 'CLAUDE.md' | undefined;
 }
 
 /**
@@ -136,8 +136,8 @@ export interface GeminiInitResult {
   success: boolean;
   filesCreated: string[];
   skillsGenerated: string[];
-  warnings?: string[];
-  errors?: string[];
+  warnings?: string[] | undefined;
+  errors?: string[] | undefined;
 }
 
 /**

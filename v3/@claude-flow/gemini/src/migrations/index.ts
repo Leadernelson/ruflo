@@ -242,7 +242,7 @@ export function analyzeClaudeMd(content: string): ParsedClaudeMd {
  */
 export function convertSkillSyntax(content: string): string {
   // Convert /skill-name to $skill-name (only in skill contexts)
-  return content.replace(/(?<!\w)\/([a-z][a-z0-9-]+)(?!\w)/g, '$$$$1');
+  return content.replace(/(?<!\w)\/([a-z][a-z0-9-]+)(?!\w)/g, (_match, p1: string) => `$${p1}`);
 }
 
 /**
