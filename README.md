@@ -430,8 +430,8 @@ swarm_init({
 # Option A: Claude Code (recommended)
 npm install -g @anthropic-ai/claude-code
 
-# Option B: Google Gemini CLI
-npm install -g @anthropic-ai/gemini
+# Option B: Google Gemini CLI (see https://ai.google.dev/gemini-api/docs/cli)
+npm install -g gemini-cli
 
 # Option C: OpenAI Codex CLI
 npm install -g @openai/codex
