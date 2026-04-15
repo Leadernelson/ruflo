@@ -1,7 +1,7 @@
 {
   "name": "claude-flow",
   "version": "3.5.80",
-  "description": "Ruflo - Enterprise AI agent orchestration for Claude Code. Deploy 60+ specialized agents in coordinated swarms with self-learning, fault-tolerant consensus, vector memory, and MCP integration",
+  "description": "Ruflo - Enterprise AI agent orchestration for Claude Code, Google Gemini CLI & OpenAI Codex. Deploy 60+ specialized agents in coordinated swarms with self-learning, fault-tolerant consensus, vector memory, and MCP integration",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
@@ -104,6 +104,9 @@
     "large-language-model",
     "gpt",
     "chatgpt",
+    "gemini",
+    "gemini-cli",
+    "google-gemini",
     "automation",
     "workflow",
     "orchestration",
